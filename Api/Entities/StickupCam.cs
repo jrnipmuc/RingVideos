@@ -108,8 +108,9 @@ namespace KoenZomers.Ring.Api.Entities
         public decimal? BatteryVoltage2 { get; set; }
 
         [JsonPropertyName("led_status")]
+        [JsonConverter(typeof(LedStatusConverter))]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string LedStatus { get; set; }
+        public LedStatus LedStatus { get; set; }
 
         [JsonPropertyName("siren_status")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -119,4 +120,5 @@ namespace KoenZomers.Ring.Api.Entities
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public long? NightMode { get; set; }
     }
+
 }
