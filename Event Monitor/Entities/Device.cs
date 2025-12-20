@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Event_Monitor.Services;
 
 namespace Event_Monitor.Entities
 {
@@ -28,13 +29,10 @@ namespace Event_Monitor.Entities
         public virtual Site Site { get; set; }
 
         /// <summary>
-        /// Device type reference
+        /// Device type as enum value
         /// </summary>
         [Required]
         public long DeviceTypeId { get; set; }
-
-        [ForeignKey(nameof(DeviceTypeId))]
-        public virtual DeviceType DeviceType { get; set; }
 
         /// <summary>
         /// Description/Name of the device
@@ -61,5 +59,20 @@ namespace Event_Monitor.Entities
 
         [NotMapped]
         public string SiteName => Site?.Description ?? "Unassociated";
+
+        [NotMapped]
+        public string DeviceTypeName => ((DeviceType)DeviceTypeId).GetDescription();
+
+        public DeviceType DeviceType
+        {
+            get
+            {
+                return (DeviceType)DeviceTypeId;
+            }
+            set
+            {
+                DeviceTypeId = (long)value;
+            }
+        }
     }
 }

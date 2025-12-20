@@ -28,7 +28,6 @@ namespace Event_Monitor.Data
         public async Task<List<Device>> GetUnassociatedAsync()
         {
             return await _context.Devices
-                .Include(d => d.DeviceType)
                 .Where(d => d.SiteId == 0)
                 .OrderBy(d => d.Description)
                 .ToListAsync();
@@ -37,7 +36,6 @@ namespace Event_Monitor.Data
         public async Task<List<Device>> GetBySiteAsync(long siteId)
         {
             return await _context.Devices
-                .Include(d => d.DeviceType)
                 .Include(d => d.Site)
                 .Where(d => d.SiteId == siteId)
                 .OrderBy(d => d.Description)
@@ -55,7 +53,6 @@ namespace Event_Monitor.Data
         {
             return await _context.Devices
                 .Include(d => d.Site)
-                .Include(d => d.DeviceType)
                 .FirstOrDefaultAsync(d => d.RingId == ringId);
         }
 
@@ -79,6 +76,7 @@ namespace Event_Monitor.Data
             if (device == null)
                 return false;
 
+            _context.Devices.Remove(device);
             await _context.SaveChangesAsync();
             return true;
         }
