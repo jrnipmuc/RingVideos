@@ -25,7 +25,7 @@ namespace RingVideos
          var passwordOption = new Option<string>(new string[] { "--password", "-p" }, "Ring account password");
          var userNameOption = new Option<string>(new string[] { "--username", "-u" }, "Ring account username");
          var starredOption = new Option<bool>(new string[] { "--starred" }, () => false, "Flag to only download Starred videos");
-         var maxcountOption = new Option<int>(new string[] { "--maxcount", "-m" }, () => 1000, "Maximum number of videos to download");
+         var maxcountOption = new Option<int>(new string[] { "--maxcount", "-m" }, () => 18000, "Maximum number of videos to download");
          var deviceIdOption = new Option<long>(new string[] { "--device-id", "--id" },  "Device ID to download videos from. (Use command `devices` to get the available list)");
          //var debugLogOption = new Option<bool>(new string[] { "-d", "--debug" }, "Debug log option flag");
          //var traceLogOption = new Option<bool>(new string[] { "-t", "--trace" }, "Trace log option flag");

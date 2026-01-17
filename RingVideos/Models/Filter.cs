@@ -6,7 +6,7 @@ namespace RingVideos.Models
 
    public class Filter
    {
-      public int VideoCount { get; set; } = 10000;
+      public int VideoCount { get; set; } = 180000;
       public DateTime? StartDateTime { get; set; }
       public DateTime? EndDateTime { get; set; } = DateTime.Today.AddDays(1).AddSeconds(-1);
 

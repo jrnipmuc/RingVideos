@@ -444,10 +444,15 @@ namespace RingVideos
                 var expandedPath = Environment.ExpandEnvironmentVariables(filter.DownloadPath);
 
                 TimeZoneInfo.Local.GetUtcOffset(ding.CreatedAtDateTime.Value);
+
+                string deviceName = ding.Doorbot.Description.Replace("/",string.Empty);
+
                 var est = ding.CreatedAtDateTime.Value.ToLocalTime();
                 var timestamp = $"{est.Year}-{est.Month.ToString().PadLeft(2, '0')}-{est.Day.ToString().PadLeft(2, '0')}-T{est.Hour.ToString().PadLeft(2, '0')}_{est.Minute.ToString().PadLeft(2, '0')}_{est.Second.ToString().PadLeft(2, '0')}";
-                var shortFileName = $"{timestamp}--{ding.Doorbot.Description}.mp4";
-                filename = Path.Combine(expandedPath, shortFileName);
+                var shortFileName = $"{timestamp}--{deviceName}.mp4";
+                var dateFolder = ding.CreatedAtDateTime.Value.ToLocalTime().ToString("yyyy-MM-dd");
+                Directory.CreateDirectory(Path.Combine(expandedPath, deviceName, dateFolder));
+                filename = Path.Combine(expandedPath, deviceName, dateFolder, shortFileName);
 
                 string msg = $"{index.ToString().PadLeft(3, '0')}) {shortFileName} | {ding.CreatedAtDateTime.Value.ToLocalTime().ToString("MM/dd/yyyy hh:mm:ss tt")} | {ding.Kind} | {ding.Doorbot.Description} :: ";
                 cw.Write(lw, msg);
