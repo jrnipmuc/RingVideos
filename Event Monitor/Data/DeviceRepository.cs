@@ -81,7 +81,7 @@ namespace Event_Monitor.Data
             return true;
         }
 
-        public async Task<Device> UpsertFromRingAsync(long ringId, string deviceId, string kind, string description, long deviceTypeId)
+        public async Task<Device> UpsertFromRingAsync(long ringId, string deviceId, string kind, string description, int deviceTypeId)
         {
             var existing = await GetByRingIdAsync(ringId);
             

@@ -8,7 +8,7 @@ namespace Event_Monitor
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static async Task Main()
+        static void Main()
         {
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
@@ -19,7 +19,8 @@ namespace Event_Monitor
                 context.Database.EnsureCreated();
             }
 
-            await AppContext.LoadFromDatabaseAsync();
+            // Run the async initialization synchronously to maintain STA context
+            AppContext.LoadFromDatabaseAsync().GetAwaiter().GetResult();
 
             Application.Run(new Form1());
         }

@@ -12,6 +12,81 @@ namespace Event_Monitor
             UpdateStatusLabels();
         }
 
+        protected override async void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            await CheckAuthenticationAsync();
+            SelectSingletonTab(new Controls.MainTabs.DevicesTab());
+        }
+
+        private async Task CheckAuthenticationAsync()
+        {
+            // Check if we have an active connection
+            if (AppContext.Current?.CurrentLogin == null)
+            {
+                var result = MessageBox.Show(
+                    "No active connection configured.\n\nWould you like to configure a login now?",
+                    "No Connection",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Yes)
+                {
+                    ShowLoginsDialog();
+                }
+                return;
+            }
+
+            // Check if token is expired
+            if (!AppContext.Current.CurrentLogin.HasValidToken)
+            {
+                var daysExpired = AppContext.Current.CurrentLogin.TokenExpirationDate.HasValue
+                    ? (int)(DateTime.Now - AppContext.Current.CurrentLogin.TokenExpirationDate.Value).TotalDays
+                    : 0;
+
+                var message = daysExpired > 0
+                    ? $"Your authentication token expired {daysExpired} day(s) ago.\n\nYou must re-authenticate to use the application."
+                    : "Your authentication token has expired.\n\nYou must re-authenticate to use the application.";
+
+                var result = MessageBox.Show(
+                    message,
+                    "Token Expired",
+                    MessageBoxButtons.OKCancel,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.OK)
+                {
+                    ShowLoginsDialog();
+                }
+            }
+            else if (AppContext.Current.CurrentLogin.TokenExpirationDate.HasValue)
+            {
+                // Check if token is expiring soon (within 3 days)
+                var daysRemaining = (AppContext.Current.CurrentLogin.TokenExpirationDate.Value - DateTime.Now).TotalDays;
+
+                if (daysRemaining <= 3 && daysRemaining > 0)
+                {
+                    var result = MessageBox.Show(
+                        $"Your authentication token will expire in {(int)Math.Ceiling(daysRemaining)} day(s).\n\nWould you like to re-authenticate now?",
+                        "Token Expiring Soon",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Information);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        ShowLoginsDialog();
+                    }
+                }
+            }
+        }
+
+        private void ShowLoginsDialog()
+        {
+            var logins = new Dialogs.LoginsDialog();
+            logins.FormClosed += (s, args) => UpdateStatusLabels();
+            logins.ShowDialog(this); // Use ShowDialog for modal behavior on startup
+        }
+
         private void fileToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
@@ -19,15 +94,12 @@ namespace Event_Monitor
 
         private void loginsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Dialogs.LoginsDialog logins = new Dialogs.LoginsDialog();
-            logins.FormClosed += (s, args) => UpdateStatusLabels(); // Update when dialog closes
-            logins.Show(this);
+            ShowLoginsDialog();
         }
 
         private void sitesToolStripMenuItem_Click(object sender, EventArgs e)
         {
         }
-
 
         private void devicesToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -49,7 +121,6 @@ namespace Event_Monitor
 
         private void AppContext_ContextChanged(object sender, EventArgs e)
         {
-            // Update status labels when AppContext changes
             UpdateStatusLabels();
         }
 
@@ -139,7 +210,6 @@ namespace Event_Monitor
         {
             if (disposing)
             {
-                // Unsubscribe from event to prevent memory leaks
                 AppContext.ContextChanged -= AppContext_ContextChanged;
                 components?.Dispose();
             }
@@ -162,13 +232,7 @@ namespace Event_Monitor
 
         private void sitesToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var dialog = new EnumManagerDialog<Site>("SItes");
-            dialog.ShowDialog();
 
-        }
-        
-        private void deviceTypesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
         }
     }
 }

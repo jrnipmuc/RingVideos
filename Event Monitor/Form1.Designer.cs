@@ -84,7 +84,7 @@
             // devicesToolStripMenuItem
             // 
             devicesToolStripMenuItem.Name = "devicesToolStripMenuItem";
-            devicesToolStripMenuItem.Size = new Size(174, 34);
+            devicesToolStripMenuItem.Size = new Size(270, 34);
             devicesToolStripMenuItem.Text = "&Devices";
             devicesToolStripMenuItem.Click += devicesToolStripMenuItem_Click;
             // 
@@ -98,21 +98,21 @@
             // sitesToolStripMenuItem1
             // 
             sitesToolStripMenuItem1.Name = "sitesToolStripMenuItem1";
-            sitesToolStripMenuItem1.Size = new Size(270, 34);
+            sitesToolStripMenuItem1.Size = new Size(229, 34);
             sitesToolStripMenuItem1.Text = "&Sites";
             sitesToolStripMenuItem1.Click += sitesToolStripMenuItem1_Click;
             // 
             // loginsToolStripMenuItem
             // 
             loginsToolStripMenuItem.Name = "loginsToolStripMenuItem";
-            loginsToolStripMenuItem.Size = new Size(270, 34);
+            loginsToolStripMenuItem.Size = new Size(229, 34);
             loginsToolStripMenuItem.Text = "&Logins";
             loginsToolStripMenuItem.Click += loginsToolStripMenuItem_Click;
             // 
             // rootDirectoryToolStripMenuItem
             // 
             rootDirectoryToolStripMenuItem.Name = "rootDirectoryToolStripMenuItem";
-            rootDirectoryToolStripMenuItem.Size = new Size(270, 34);
+            rootDirectoryToolStripMenuItem.Size = new Size(229, 34);
             rootDirectoryToolStripMenuItem.Text = "&Root Directory";
             rootDirectoryToolStripMenuItem.Click += rootDirectoryToolStripMenuItem_Click;
             // 
@@ -136,6 +136,7 @@
             MainMenuStrip = menuStripMain;
             Name = "Form1";
             Text = "Ring Event Monitor";
+            WindowState = FormWindowState.Maximized;
             statusStripMain.ResumeLayout(false);
             statusStripMain.PerformLayout();
             menuStripMain.ResumeLayout(false);

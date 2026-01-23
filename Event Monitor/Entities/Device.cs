@@ -23,7 +23,7 @@ namespace Event_Monitor.Entities
         /// Associated site ID (required, not nullable)
         /// </summary>
         [Required]
-        public long SiteId { get; set; }
+        public int SiteId { get; set; }
 
         [ForeignKey(nameof(SiteId))]
         public virtual Site Site { get; set; }
@@ -32,7 +32,7 @@ namespace Event_Monitor.Entities
         /// Device type as enum value
         /// </summary>
         [Required]
-        public long DeviceTypeId { get; set; }
+        public int DeviceTypeId { get; set; }
 
         /// <summary>
         /// Description/Name of the device
@@ -58,11 +58,12 @@ namespace Event_Monitor.Entities
         public bool IsUnassociated => SiteId == 0;
 
         [NotMapped]
-        public string SiteName => Site?.Description ?? "Unassociated";
+        public string SiteName => Site?.Description ?? "Unknown";
 
         [NotMapped]
         public string DeviceTypeName => ((DeviceType)DeviceTypeId).GetDescription();
 
+        [NotMapped]
         public DeviceType DeviceType
         {
             get
@@ -71,7 +72,7 @@ namespace Event_Monitor.Entities
             }
             set
             {
-                DeviceTypeId = (long)value;
+                DeviceTypeId = (int)value;
             }
         }
     }

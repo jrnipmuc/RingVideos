@@ -7,8 +7,8 @@ namespace Event_Monitor.Entities
     public class Site : IEnumEntity
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long Id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Id { get; set; }
 
         [Required]
         [MaxLength(100)]

@@ -9,28 +9,21 @@
             splitContainer1 = new SplitContainer();
             btnSyncDevices = new Button();
             tvDevices = new TreeView();
+            splitContainerRight = new SplitContainer();
             grpDeviceDetails = new GroupBox();
-            cmbSite = new ComboBox();
-            lblSite = new Label();
-            cmbDeviceType = new ComboBox();
-            lblDeviceType = new Label();
-            txtKind = new TextBox();
-            lblKind = new Label();
-            txtDeviceId = new TextBox();
-            lblDeviceId = new Label();
-            txtRingId = new TextBox();
-            lblRingId = new Label();
-            txtDescription = new TextBox();
-            lblDescription = new Label();
-            txtId = new TextBox();
-            lblId = new Label();
-            btnSave = new Button();
-            btnRefresh = new Button();
+            deviceDetailsPanel = new DeviceDetailsPanel();
+            grpEvents = new GroupBox();
+            deviceEventsPanel = new DeviceEventsPanel();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)splitContainerRight).BeginInit();
+            splitContainerRight.Panel1.SuspendLayout();
+            splitContainerRight.Panel2.SuspendLayout();
+            splitContainerRight.SuspendLayout();
             grpDeviceDetails.SuspendLayout();
+            grpEvents.SuspendLayout();
             SuspendLayout();
             // 
             // splitContainer1
@@ -46,11 +39,9 @@
             // 
             // splitContainer1.Panel2
             // 
-            splitContainer1.Panel2.Controls.Add(btnRefresh);
-            splitContainer1.Panel2.Controls.Add(btnSave);
-            splitContainer1.Panel2.Controls.Add(grpDeviceDetails);
-            splitContainer1.Size = new Size(900, 600);
-            splitContainer1.SplitterDistance = 300;
+            splitContainer1.Panel2.Controls.Add(splitContainerRight);
+            splitContainer1.Size = new Size(1200, 700);
+            splitContainer1.SplitterDistance = 150;
             splitContainer1.TabIndex = 0;
             // 
             // btnSyncDevices
@@ -60,7 +51,7 @@
             btnSyncDevices.Name = "btnSyncDevices";
             btnSyncDevices.Size = new Size(300, 40);
             btnSyncDevices.TabIndex = 0;
-            btnSyncDevices.Text = "Sync from Ring";
+            btnSyncDevices.Text = "Sync Devices from Ring";
             btnSyncDevices.UseVisualStyleBackColor = true;
             btnSyncDevices.Click += btnSyncDevices_Click;
             // 
@@ -69,207 +60,94 @@
             tvDevices.Dock = DockStyle.Fill;
             tvDevices.Location = new Point(0, 40);
             tvDevices.Name = "tvDevices";
-            tvDevices.Size = new Size(300, 560);
+            tvDevices.Size = new Size(300, 660);
             tvDevices.TabIndex = 1;
             tvDevices.AfterSelect += tvDevices_AfterSelect;
             // 
+            // splitContainerRight
+            // 
+            splitContainerRight.Dock = DockStyle.Fill;
+            splitContainerRight.Location = new Point(0, 0);
+            splitContainerRight.Name = "splitContainerRight";
+            splitContainerRight.Orientation = Orientation.Horizontal;
+            // 
+            // splitContainerRight.Panel1
+            // 
+            splitContainerRight.Panel1.Controls.Add(grpDeviceDetails);
+            // 
+            // splitContainerRight.Panel2
+            // 
+            splitContainerRight.Panel2.Controls.Add(grpEvents);
+            splitContainerRight.Size = new Size(896, 700);
+            splitContainerRight.SplitterDistance = 60;
+            splitContainerRight.TabIndex = 0;
+            // 
             // grpDeviceDetails
             // 
-            grpDeviceDetails.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            grpDeviceDetails.Controls.Add(cmbSite);
-            grpDeviceDetails.Controls.Add(lblSite);
-            grpDeviceDetails.Controls.Add(cmbDeviceType);
-            grpDeviceDetails.Controls.Add(lblDeviceType);
-            grpDeviceDetails.Controls.Add(txtKind);
-            grpDeviceDetails.Controls.Add(lblKind);
-            grpDeviceDetails.Controls.Add(txtDeviceId);
-            grpDeviceDetails.Controls.Add(lblDeviceId);
-            grpDeviceDetails.Controls.Add(txtRingId);
-            grpDeviceDetails.Controls.Add(lblRingId);
-            grpDeviceDetails.Controls.Add(txtDescription);
-            grpDeviceDetails.Controls.Add(lblDescription);
-            grpDeviceDetails.Controls.Add(txtId);
-            grpDeviceDetails.Controls.Add(lblId);
-            grpDeviceDetails.Location = new Point(15, 15);
+            grpDeviceDetails.Controls.Add(deviceDetailsPanel);
+            grpDeviceDetails.Dock = DockStyle.Fill;
+            grpDeviceDetails.Location = new Point(0, 0);
             grpDeviceDetails.Name = "grpDeviceDetails";
-            grpDeviceDetails.Size = new Size(560, 500);
+            grpDeviceDetails.Padding = new Padding(10);
+            grpDeviceDetails.Size = new Size(896, 200);
             grpDeviceDetails.TabIndex = 0;
             grpDeviceDetails.TabStop = false;
             grpDeviceDetails.Text = "Device Details";
             // 
-            // lblId
+            // deviceDetailsPanel
             // 
-            lblId.AutoSize = true;
-            lblId.Location = new Point(20, 35);
-            lblId.Name = "lblId";
-            lblId.Size = new Size(28, 25);
-            lblId.TabIndex = 0;
-            lblId.Text = "ID:";
+            deviceDetailsPanel.Dock = DockStyle.Fill;
+            deviceDetailsPanel.Location = new Point(10, 30);
+            deviceDetailsPanel.Name = "deviceDetailsPanel";
+            deviceDetailsPanel.Size = new Size(876, 160);
+            deviceDetailsPanel.TabIndex = 0;
             // 
-            // txtId
+            // grpEvents
             // 
-            txtId.Location = new Point(150, 32);
-            txtId.Name = "txtId";
-            txtId.ReadOnly = true;
-            txtId.Size = new Size(100, 31);
-            txtId.TabIndex = 1;
+            grpEvents.Controls.Add(deviceEventsPanel);
+            grpEvents.Dock = DockStyle.Fill;
+            grpEvents.Location = new Point(0, 0);
+            grpEvents.Name = "grpEvents";
+            grpEvents.Padding = new Padding(10);
+            grpEvents.Size = new Size(896, 496);
+            grpEvents.TabIndex = 0;
+            grpEvents.TabStop = false;
+            grpEvents.Text = "Events";
             // 
-            // lblDescription
+            // deviceEventsPanel
             // 
-            lblDescription.AutoSize = true;
-            lblDescription.Location = new Point(20, 75);
-            lblDescription.Name = "lblDescription";
-            lblDescription.Size = new Size(106, 25);
-            lblDescription.TabIndex = 2;
-            lblDescription.Text = "Description:";
-            // 
-            // txtDescription
-            // 
-            txtDescription.Location = new Point(150, 72);
-            txtDescription.Name = "txtDescription";
-            txtDescription.Size = new Size(385, 31);
-            txtDescription.TabIndex = 3;
-            // 
-            // lblRingId
-            // 
-            lblRingId.AutoSize = true;
-            lblRingId.Location = new Point(20, 115);
-            lblRingId.Name = "lblRingId";
-            lblRingId.Size = new Size(73, 25);
-            lblRingId.TabIndex = 4;
-            lblRingId.Text = "Ring ID:";
-            // 
-            // txtRingId
-            // 
-            txtRingId.Location = new Point(150, 112);
-            txtRingId.Name = "txtRingId";
-            txtRingId.ReadOnly = true;
-            txtRingId.Size = new Size(200, 31);
-            txtRingId.TabIndex = 5;
-            // 
-            // lblDeviceId
-            // 
-            lblDeviceId.AutoSize = true;
-            lblDeviceId.Location = new Point(20, 155);
-            lblDeviceId.Name = "lblDeviceId";
-            lblDeviceId.Size = new Size(90, 25);
-            lblDeviceId.TabIndex = 6;
-            lblDeviceId.Text = "Device ID:";
-            // 
-            // txtDeviceId
-            // 
-            txtDeviceId.Location = new Point(150, 152);
-            txtDeviceId.Name = "txtDeviceId";
-            txtDeviceId.ReadOnly = true;
-            txtDeviceId.Size = new Size(385, 31);
-            txtDeviceId.TabIndex = 7;
-            // 
-            // lblKind
-            // 
-            lblKind.AutoSize = true;
-            lblKind.Location = new Point(20, 195);
-            lblKind.Name = "lblKind";
-            lblKind.Size = new Size(51, 25);
-            lblKind.TabIndex = 8;
-            lblKind.Text = "Kind:";
-            // 
-            // txtKind
-            // 
-            txtKind.Location = new Point(150, 192);
-            txtKind.Name = "txtKind";
-            txtKind.ReadOnly = true;
-            txtKind.Size = new Size(200, 31);
-            txtKind.TabIndex = 9;
-            // 
-            // lblDeviceType
-            // 
-            lblDeviceType.AutoSize = true;
-            lblDeviceType.Location = new Point(20, 235);
-            lblDeviceType.Name = "lblDeviceType";
-            lblDeviceType.Size = new Size(107, 25);
-            lblDeviceType.TabIndex = 10;
-            lblDeviceType.Text = "Device Type:";
-            // 
-            // cmbDeviceType
-            // 
-            cmbDeviceType.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbDeviceType.FormattingEnabled = true;
-            cmbDeviceType.Location = new Point(150, 232);
-            cmbDeviceType.Name = "cmbDeviceType";
-            cmbDeviceType.Size = new Size(200, 33);
-            cmbDeviceType.TabIndex = 11;
-            // 
-            // lblSite
-            // 
-            lblSite.AutoSize = true;
-            lblSite.Location = new Point(20, 275);
-            lblSite.Name = "lblSite";
-            lblSite.Size = new Size(44, 25);
-            lblSite.TabIndex = 12;
-            lblSite.Text = "Site:";
-            // 
-            // cmbSite
-            // 
-            cmbSite.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbSite.FormattingEnabled = true;
-            cmbSite.Location = new Point(150, 272);
-            cmbSite.Name = "cmbSite";
-            cmbSite.Size = new Size(385, 33);
-            cmbSite.TabIndex = 13;
-            // 
-            // btnSave
-            // 
-            btnSave.Location = new Point(15, 530);
-            btnSave.Name = "btnSave";
-            btnSave.Size = new Size(120, 40);
-            btnSave.TabIndex = 1;
-            btnSave.Text = "Save";
-            btnSave.UseVisualStyleBackColor = true;
-            btnSave.Click += btnSave_Click;
-            // 
-            // btnRefresh
-            // 
-            btnRefresh.Location = new Point(145, 530);
-            btnRefresh.Name = "btnRefresh";
-            btnRefresh.Size = new Size(120, 40);
-            btnRefresh.TabIndex = 2;
-            btnRefresh.Text = "Refresh";
-            btnRefresh.UseVisualStyleBackColor = true;
-            btnRefresh.Click += btnRefresh_Click;
+            deviceEventsPanel.Dock = DockStyle.Fill;
+            deviceEventsPanel.Location = new Point(10, 30);
+            deviceEventsPanel.Name = "deviceEventsPanel";
+            deviceEventsPanel.Size = new Size(876, 456);
+            deviceEventsPanel.TabIndex = 0;
             // 
             // DevicesTab
             // 
             Controls.Add(splitContainer1);
             Name = "DevicesTab";
             Text = "Devices";
+            Size = new Size(1200, 700);
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
+            splitContainerRight.Panel1.ResumeLayout(false);
+            splitContainerRight.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)splitContainerRight).EndInit();
+            splitContainerRight.ResumeLayout(false);
             grpDeviceDetails.ResumeLayout(false);
-            grpDeviceDetails.PerformLayout();
+            grpEvents.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         private SplitContainer splitContainer1;
         private Button btnSyncDevices;
         private TreeView tvDevices;
+        private SplitContainer splitContainerRight;
         private GroupBox grpDeviceDetails;
-        private Label lblId;
-        private TextBox txtId;
-        private Label lblDescription;
-        private TextBox txtDescription;
-        private Label lblRingId;
-        private TextBox txtRingId;
-        private Label lblDeviceId;
-        private TextBox txtDeviceId;
-        private Label lblKind;
-        private TextBox txtKind;
-        private Label lblDeviceType;
-        private ComboBox cmbDeviceType;
-        private Label lblSite;
-        private ComboBox cmbSite;
-        private Button btnSave;
-        private Button btnRefresh;
+        private DeviceDetailsPanel deviceDetailsPanel;
+        private GroupBox grpEvents;
+        private DeviceEventsPanel deviceEventsPanel;
     }
 }

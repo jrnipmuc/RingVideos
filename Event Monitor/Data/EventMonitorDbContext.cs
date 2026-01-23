@@ -1,4 +1,5 @@
-﻿using Event_Monitor.Entities;
+﻿using System.Configuration;
+using Event_Monitor.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Event_Monitor.Data
@@ -9,6 +10,7 @@ namespace Event_Monitor.Data
         public DbSet<Setting> Settings { get; set; }
         public DbSet<Site> Sites { get; set; }
         public DbSet<Device> Devices { get; set; }
+        public DbSet<RingEvent> RingEvents { get; set; }
 
         public EventMonitorDbContext() : base()
         {
@@ -22,49 +24,43 @@ namespace Event_Monitor.Data
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var appDataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "EventMonitor");
-
-#if DEBUG // During development, place DB in project directory
-                appDataPath = AppDomain.CurrentDomain.BaseDirectory;
-#endif
-
-                var dbPath = Path.Combine(appDataPath, "eventmonitor.db");
+                var dbPath = GetDatabasePath();
+                
+                // Ensure directory exists
+                var directory = Path.GetDirectoryName(dbPath);
+                if (!string.IsNullOrEmpty(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+                
                 optionsBuilder.UseSqlite($"Data Source={dbPath}");
             }
+        }
+
+        private static string GetDatabasePath()
+        {
+            // Try to read from App.config
+            var configuredPath = ConfigurationManager.AppSettings["DatabasePath"];
+            
+            if (!string.IsNullOrWhiteSpace(configuredPath))
+            {
+                return configuredPath;
+            }
+
+            // Fallback to AppData if not configured
+            var appDataPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), 
+                "EventMonitor");
+            
+            return Path.Combine(appDataPath, "eventmonitor.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Connection>(entity =>
-            {
-                entity.HasIndex(e => e.Username).IsUnique();
-            });
-
-            modelBuilder.Entity<Setting>(entity =>
-            {
-                entity.HasIndex(e => e.EffectiveEndDate);
-                entity.Property(e => e.EffectiveStartDate).HasDefaultValueSql("CURRENT_TIMESTAMP");
-
-                entity.HasOne(s => s.Connection)
-                    .WithMany()
-                    .HasForeignKey(s => s.ConnectionId)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            modelBuilder.Entity<Site>(entity =>
-            {
-                entity.HasIndex(e => e.Description);
-            });
-
-            modelBuilder.Entity<Device>(entity =>
-            {
-                entity.HasOne(d => d.Site)
-                    .WithMany(s => s.Devices)
-                    .HasForeignKey(d => d.SiteId)
-                    .OnDelete(DeleteBehavior.Restrict);
-            });
+            // Apply all configurations from the assembly
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(EventMonitorDbContext).Assembly);
         }
     }
 }

@@ -2,7 +2,7 @@ namespace Event_Monitor.Entities
 {
     public interface IEnumEntity
     {
-        long Id { get; set; }
+        int Id { get; set; }
         string Description { get; set; }
     }
 }
